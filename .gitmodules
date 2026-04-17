@@ -10,3 +10,6 @@
 [submodule "docs/handbook"]
 	path = docs/handbook
 	url = https://github.com/quanttide/quanttide-handbook-of-asset-management.git
+[submodule "docs/bylaw"]
+	path = docs/bylaw
+	url = https://github.com/quanttide/quanttide-bylaw-of-asset-management.git
