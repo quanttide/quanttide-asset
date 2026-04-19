@@ -5,7 +5,7 @@ import subprocess
 import json
 import os
 import time
-from config import BASE_DIR, SPACES_DIR, PAGE_SIZE, REQUEST_DELAY
+from config import BASE_DIR, SPACES_DIR, PAGE_SIZE, REQUEST_DELAY, space_dir, node_file, metadata_file
 
 os.makedirs(SPACES_DIR, exist_ok=True)
 
@@ -69,7 +69,7 @@ def fetch_nodes(space_id, parent_token, indent=0):
                     "node": node,
                     "detail": detail.get("data", {})
                 }
-                save_json(node_data, f"{SPACES_DIR}/space_{space_id}/nodes/node_{node_token}.json")
+                save_json(node_data, node_file(space_id, node_token))
 
             if node.get("has_child"):
                 child_nodes = fetch_nodes(space_id, node_token, indent + 1)
@@ -106,15 +106,15 @@ def main():
         print(f"知识库: {space_name} ({space_id})")
         print(f"{'='*50}")
 
-        space_dir = f"{SPACES_DIR}/space_{space_id}"
-        os.makedirs(f"{space_dir}/nodes", exist_ok=True)
+        _space_dir = space_dir(space_id)
+        os.makedirs(f"{_space_dir}/nodes", exist_ok=True)
 
         # 保存知识库 metadata
         space_data = {
             "space": space,
             "nodes_count": 0
         }
-        save_json(space_data, f"{space_dir}/metadata.json")
+        save_json(space_data, metadata_file(space_id))
 
         # 获取节点树
         nodes = fetch_nodes(space_id, "")
