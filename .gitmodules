@@ -16,3 +16,6 @@
 [submodule "docs/specification"]
 	path = docs/specification
 	url = https://github.com/quanttide/quanttide-specification-of-asset-management.git
+[submodule "docs/report"]
+	path = docs/report
+	url = https://github.com/quanttide/quanttide-report-of-asset-management.git
