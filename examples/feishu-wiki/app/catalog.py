@@ -1,18 +1,11 @@
 #!/usr/bin/env python3
-# feishu-wiki-downloader.py - 下载知识库到本地
+# catalog.py - 下载知识库到本地
 
 import subprocess
 import json
 import os
 import time
-from dotenv import load_dotenv
-
-# 加载 .env 配置
-load_dotenv()
-
-BASE_DIR = os.getenv("BASE_DIR", "./data/feishu_wiki")
-PAGE_SIZE = int(os.getenv("PAGE_SIZE", "50"))
-REQUEST_DELAY = float(os.getenv("REQUEST_DELAY", "0.2"))
+from config import BASE_DIR, PAGE_SIZE, REQUEST_DELAY
 
 SPACES_DIR = f"{BASE_DIR}/spaces"
 os.makedirs(SPACES_DIR, exist_ok=True)
@@ -117,7 +110,7 @@ def main():
         space_dir = f"{SPACES_DIR}/space_{space_id}"
         os.makedirs(f"{space_dir}/nodes", exist_ok=True)
 
-        # 保存��识库 metadata
+        # 保存知识库 metadata
         space_data = {
             "space": space,
             "nodes_count": 0
