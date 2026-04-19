@@ -7,39 +7,36 @@ description: 验证文档能否正常编译或渲染。
 
 验证各类文档能否正常编译或渲染。
 
-## 子模块列表
-
-| 子模块 | 文档格式 | 验证命令 |
-|--------|---------|----------|
-| docs/specification | MyST | `myst build --site` |
-| docs/bylaw | - | - |
-| docs/handbook | - | - |
-| docs/report | - | - |
-| docs/context | - | - |
-| docs/tutorial | - | - |
-
 ## 验证流程
 
-### specification 子模块
+### 1. 检查工具
+
+根据文档格式选择验证工具：
 
 ```bash
-cd docs/specification
+# Myst 文档
+which myst
+
+# 其他格式按需检查
+```
+
+### 2. 编译尝试
+
+进入文档目录，执行编译命令：
+
+```bash
+cd <docs-dir>
 myst build --site
 ```
 
-验证成功标准：
+### 3. 检查结果
+
 - 无警告/错误
-- `_build/site/content/` 有 `.json` 文件
-
-### 通用检查
-
-1. **文件存在**：检查引用的文件是否存在
-2. **链接有效**：内部链接是否能访问
-3. **语法正确**：Markdown/MyST 语法
+- 编译输出存在
 
 ## 常见问题
 
-### specification 编译错误
+### 配置文件错误
 
 | 错误 | 原因 | 解决 |
 |------|------|------|
@@ -47,13 +44,13 @@ myst build --site
 | `'file' expected` | toc 配置 | 确认有 file 或 title |
 | `No given name` | authors 缺少 | 使用 `name: xxx` |
 
-### 正确 myst.yml
+### 正确配置
 
 ```yaml
 project:
   title: 标题
   authors:
-    - name: QuantTide
+    - name: 名称
   toc:
     - file: index.md
     - title: 章节
@@ -63,6 +60,7 @@ project:
 
 ## 验证要点
 
-- 确认使用对应的子模块路径
-- 检查相应的配置文件
-- 验证编译输出
+- 工具已安装
+- 配置文件正确
+- 源文件存在
+- 编译输出正常
