@@ -10,4 +10,5 @@ dist/
 build/
 .env
 .venv
+
 data/
