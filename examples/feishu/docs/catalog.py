@@ -70,7 +70,7 @@ def fetch_nodes(space_id, parent_token, indent=0):
                     "node": node,
                     "detail": detail.get("data", {})
                 }
-                save_json(node_data, f"{SPACES_DIR}/space_{space_id}/nodes/{node_token}.json")
+                save_json(node_data, f"{SPACES_DIR}/space_{space_id}/nodes/node_{node_token}.json")
 
             if node.get("has_child"):
                 fetch_nodes(space_id, node_token, indent + 1)
