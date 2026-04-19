@@ -34,16 +34,6 @@ myst build --site
 - 无警告/错误
 - 编译输出存在
 
-## 常见问题
-
-### 配置文件错误
-
-| 错误 | 原因 | 解决 |
-|------|------|------|
-| `'name' unexpected comma` | authors 格式 | 改为 `name: 名称` |
-| `'file' expected` | toc 配置 | 确认有 file 或 title |
-| `No given name` | authors 缺少 | 使用 `name: xxx` |
-
 ### 正确配置
 
 ```yaml
