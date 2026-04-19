@@ -5,17 +5,18 @@
 ### 已完成
 
 - [x] 问题定位：API 用错了，`get_node` 是获取单个节点，`/wiki/v2/spaces/:space_id/nodes` 才是获取子节点列表
-- [x] 验证 API 路径：用 curl 直接调用正确的 list API
+- [x] 验证 lark-cli 是否支持 list API：需要测试 `lark-cli api GET /wiki/v2/spaces/:space_id/nodes`
 - [x] 确认权限范围：确认 access_token 包含必要的权限 scope
 
 ### 进行中
 
-- [ ] 实现递归下载脚本（Python）
-  1. 获取 tenant_access_token
-  2. 获取所有知识库的 space_id 和根节点
-  3. 递归调用 `list` 接口获取子节点
-  4. 调用 `get_node` 获取节点详情
-  5. 下载文档内容并转换为 Markdown
+- [ ] 使用 lark-cli 实现递归下载
+  1. 安装本地 lark-cli：`pip install lark-cli`
+  2. 配置 access_token
+  3. 调用 `lark-cli api GET /wiki/v2/spaces` 获取知识库列表
+  4. 递归调用 `lark-cli api GET /wiki/v2/spaces/:space_id/nodes` 获取子节点
+  5. 调用 `lark-cli api GET /wiki/v2/spaces/get_node` 获取节点详情
+  6. 调用 `lark-cli docs fetch` 下载文档内容
 
 ### 待处理
 
