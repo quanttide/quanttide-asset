@@ -18,3 +18,7 @@ def node_file(space_id, node_token):
 
 def metadata_file(space_id):
     return f"{space_dir(space_id)}/metadata.json"
+
+def ensure_space_dirs(space_id):
+    os.makedirs(space_dir(space_id), exist_ok=True)
+    os.makedirs(os.path.dirname(node_file(space_id, "")), exist_ok=True)

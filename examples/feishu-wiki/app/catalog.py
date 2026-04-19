@@ -5,9 +5,10 @@ import subprocess
 import json
 import os
 import time
-from config import BASE_DIR, SPACES_DIR, PAGE_SIZE, REQUEST_DELAY, space_dir, node_file, metadata_file
+from config import BASE_DIR, SPACES_DIR, PAGE_SIZE, REQUEST_DELAY, space_dir, node_file, metadata_file, ensure_space_dirs
 
 os.makedirs(SPACES_DIR, exist_ok=True)
+os.makedirs(BASE_DIR, exist_ok=True)
 
 def run_lark_cli(args):
     cmd = ["lark-cli"] + args
@@ -106,8 +107,7 @@ def main():
         print(f"知识库: {space_name} ({space_id})")
         print(f"{'='*50}")
 
-        _space_dir = space_dir(space_id)
-        os.makedirs(f"{_space_dir}/nodes", exist_ok=True)
+        ensure_space_dirs(space_id)
 
         # 保存知识库 metadata
         space_data = {
