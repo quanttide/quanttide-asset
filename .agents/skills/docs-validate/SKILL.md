@@ -1,95 +1,71 @@
 ---
 name: docs-validate
-description: 验证文档格式和内容时使用。文档验证技能，检查Markdown文档是否符合量潮科技文档格式标准。
+description: 验证 Markdown/Myst 文档能否正常编译。
 ---
 
 # 文档验证技能
 
-验证 Markdown 文档是否符合量潮科技文档格式标准。
+验证 Myst 文档（MyST 格式）能否正常编译。
 
-## 验证项
+## 使用场景
 
-### 1. 标题层级
-
-- 检查是否仅使用三级标题（`#` / `##` / `###`）
-- 一级标题 `#` 仅出现一次，用于文档标题
-- 标题中不包含标点符号
-
-### 2. 分隔线
-
-- 检查分隔线 `---` 使用是否过多（全文不超过 3 处）
-- 优先用空行+标题区分章节
-
-### 3. 列表规范
-
-无序列表 `-` 检查：
-- 避免嵌套超过 2 级
-- 列表项不过长
-
-有序列表 `1.` 检查：
-- 用于有明确顺序的步骤
-- 不滥用编号
-
-### 4. 代码块
-
-- 必须标注代码语言类型
-- 行内代码使用反引号
-
-```bash
-# 正确
-```bash
-echo "hello"
-```
-
-```python
-# 正确
-def hello():
-    print("hello")
-```
-
-### 5. 表格
-
-检查表格使用场景：
-- 需要横向对比多个项目
-- 数据具有明确的列属性
-
-避免场景：
-- 仅简单的名词-定义对应
-- 单元格内容过长
-
-### 6. 加粗
-
-检查加粗使用：
-- 仅标记关键术语首次定义
-- 避免过度使用
-
-### 7. 链接
-
-- 外部链接使用完整 URL
-- 内部链接使用相对路径
-
-### 8. 引号
-
-中文文档检查：
-- 使用中文引号：「引用内容」
-- 避免包裹所有术语
+- 创建或修改 docs/specification/ 下的文档后
+- 修改 myst.yml 配置后
 
 ## 验证流程
 
-1. **格式检查**：运行文档格式工具
-2. **语法检查**：检查 Markdown 语法正确性
-3. **链接检查**：验证内部链接有效性
-4. **图片检查**：验证图片路径存在
-
-## 常用命令
+### 1. 安装检查
 
 ```bash
-# 检查 Markdown 语法
-markdownlint file.md
-
-# 检查链接
-linklint site/
-
-# 检查图片
-checkimages docs/
+which myst || pip show mystmd
 ```
+
+### 2. 编译文档
+
+```bash
+cd docs/specification
+myst build --site
+```
+
+### 3. 检查结果
+
+- 无警告/错误输出
+- `content/` 目录有 `.json` 文件
+
+## 常见问题
+
+### myst.yml 配置错误
+
+| 错误 | 原因 | 解决方案 |
+|------|------|----------|
+| `'name' unexpected comma` | authors 格式错误 | 改为 `name: 名称` |
+| `'file' expected an entry` | toc 配置错误 | 确认每个条目有 `file` 或 `title` |
+| `No given name` | authors 缺少 given | 使用 `name: xxx` 格式 |
+
+### 正确配置示例
+
+```yaml
+project:
+  title: 项目标题
+  authors:
+    - name: QuantTide
+  toc:
+    - file: index.md
+    - title: 章节名
+      children:
+        - file: path/to/file.md
+```
+
+### 编译命令
+
+| 命令 | 用途 |
+|------|------|
+| `--site` | 编译静态站（生产用）|
+| `--html` | 编译 HTML（有服务器）|
+| `--pdf` | 编译 PDF |
+
+## 验证要点
+
+- myst.yml 无警告/错误
+- `toc` 中每个 `file` 对应的源文件存在
+- `_build/site/content/` 有 `.json` 文件
