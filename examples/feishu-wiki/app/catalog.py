@@ -5,9 +5,8 @@ import subprocess
 import json
 import os
 import time
-from config import BASE_DIR, PAGE_SIZE, REQUEST_DELAY
+from config import BASE_DIR, SPACES_DIR, PAGE_SIZE, REQUEST_DELAY
 
-SPACES_DIR = f"{BASE_DIR}/spaces"
 os.makedirs(SPACES_DIR, exist_ok=True)
 
 def run_lark_cli(args):
