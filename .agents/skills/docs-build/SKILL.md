@@ -1,9 +1,9 @@
 ---
-name: docs-validate
-description: 验证文档能否正常编译或渲染。
+name: docs-build
+description: 构建文档并验证能否正常编译或渲染。
 ---
 
-# 文档验证技能
+# 文档构建技能
 
 验证各类文档能否正常编译或渲染。
 
