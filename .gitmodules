@@ -23,3 +23,6 @@
 	path = docs/gallery
 	url = https://github.com/quanttide/quanttide-gallery-of-asset-management.git
 	branch = main
+[submodule "docs/vision"]
+	path = docs/vision
+	url = https://github.com/quanttide/quanttide-vision-of-asset-management.git
