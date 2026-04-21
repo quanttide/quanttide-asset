@@ -4,8 +4,6 @@
 import json
 import os
 import time
-import subprocess
-import shutil
 import requests
 from config import (
     BASE_DIR,
@@ -24,87 +22,17 @@ os.makedirs(BASE_DIR, exist_ok=True)
 FEISHU_BASE = "https://open.feishu.cn"
 
 # ─────────────────────────────────────────────
-# Token 获取：三种方式按优先级依次尝试
-# ─────────────────────────────────────────────
-
-def _token_from_env():
-    return os.getenv("FEISHU_ACCESS_TOKEN") or os.getenv("LARK_ACCESS_TOKEN")
-
-
-def _token_from_file():
-    """从 token_store 读取，自动检查过期。"""
-    try:
-        from token_store import load_token
-        return load_token()
-    except ImportError:
-        return None
-
-
-def _token_from_lark_cli():
-    exe = shutil.which("lark-cli") or shutil.which("lark-cli.exe")
-    if not exe:
-        cli_js = "C:/Users/雨下雨停/AppData/Roaming/npm/node_modules/@larksuite/cli/bin/lark-cli.exe"
-        if os.path.exists(cli_js):
-            exe = cli_js
-    if not exe:
-        return None
-    try:
-        proc = subprocess.run(
-            [exe, "token"],
-            stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-            stdin=subprocess.DEVNULL,
-            encoding="utf-8", errors="replace", timeout=10,
-        )
-        for line in proc.stdout.splitlines():
-            line = line.strip()
-            if line.startswith(("t-", "u-")) or (line and " " not in line and len(line) > 20):
-                # 顺手存起来，下次直接走文件
-                try:
-                    from token_store import save_token
-                    save_token(line)
-                except ImportError:
-                    pass
-                return line
-    except Exception as e:
-        print(f"[WARN] lark-cli token 失败: {e}")
-    return None
-
-
-_cached_token = None
-
-
-def get_access_token():
-    global _cached_token
-    if _cached_token:
-        # 每次用之前验证文件里是否仍有效（防止长时间运行中过期）
-        fresh = _token_from_file()
-        if fresh:
-            _cached_token = fresh
-            return _cached_token
-
-    token = _token_from_env() or _token_from_file() or _token_from_lark_cli()
-    if not token:
-        raise RuntimeError(
-            "无法获取飞书 access token，请选择以下方式之一：\n"
-            "  1. 先启动代理：python proxy.py\n"
-            "     再运行（PowerShell）：$env:LARK_ENDPOINT='http://localhost:7777'; python catalog.py\n"
-            "  2. 手动设置：$env:FEISHU_ACCESS_TOKEN='<your_token>'; python catalog.py"
-        )
-    _cached_token = token
-    return token
-
-
-# ─────────────────────────────────────────────
 # HTTP 请求
 # ─────────────────────────────────────────────
 
 def feishu_get(path, params=None, _retry=True):
     """
     用 requests 直接请求飞书 API。
-    token 过期时自动清除缓存重试一次。
+    token 由 token_store.get_token() 管理，过期自动刷新。
+    遇到服务端报 token 过期时清缓存重试一次。
     """
-    global _cached_token
-    token = get_access_token()
+    from token_store import get_token, clear_token
+    token = get_token()
     url = FEISHU_BASE + path
     headers = {
         "Authorization": f"Bearer {token}",
@@ -115,15 +43,10 @@ def feishu_get(path, params=None, _retry=True):
         resp.raise_for_status()
         data = resp.json()
 
-        # token 过期（飞书返回 code=99991671 或 99991672）
+        # 飞书 token 过期错误码
         if data.get("code") in (99991671, 99991672) and _retry:
-            print("[TOKEN] 服务端报告 token 过期，清除缓存后重试...")
-            _cached_token = None
-            try:
-                from token_store import clear_token
-                clear_token()
-            except ImportError:
-                pass
+            print("[TOKEN] 服务端报告过期，正在刷新...")
+            clear_token()
             return feishu_get(path, params, _retry=False)
 
         return data
@@ -275,11 +198,7 @@ def main():
         space_id = space.get("space_id")
         space_name = space.get("name")
 
-        # 调试用的硬编码过滤，正式使用时删掉这段
-        if space_id != "7526874705676091393":
-            print(f"[SKIP] {space_name} ({space_id})")
-            continue
-
+        # 跳过未在契约中声明的空间（如果有契约的话）
         if target_space_ids and space_id not in target_space_ids:
             print(f"[SKIP] 未在契约中声明: {space_name} ({space_id})")
             continue
