@@ -10,27 +10,11 @@
 import json
 from dataclasses import dataclass, asdict
 from pathlib import Path
-from typing import Dict, Final, List
+from typing import Dict, List
 
 import yaml
 
-# --- 业务规则配置 ---
-
-TYPE_MAP: Final = {
-    ".md": "docs",
-    ".txt": "docs",
-    ".pdf": "docs",
-    ".py": "code",
-    ".js": "code",
-    ".ts": "code",
-    ".yaml": "config",
-    ".yml": "config",
-    ".json": "config",
-    ".toml": "config",
-    ".csv": "data",
-    ".sqlite": "data",
-    ".lock": "config",
-}
+from .config import CONTRACT_FILE, IGNORE_FILES, IGNORE_DIRS, TYPE_MAP
 
 
 @dataclass(frozen=True)
@@ -55,16 +39,12 @@ def identify_type(path: Path) -> str:
 
 
 def load_contract(target: Path) -> Dict:
-    """【功能 3：契约加载策略】尝试读取 .quanttide/asset/contract.yaml"""
-    contract_path = target / ".quanttide/asset/contract.yaml"
+    """【功能 3：契约加载策略】尝试读取契约文件"""
+    contract_path = target / CONTRACT_FILE
     if not contract_path.exists():
         return {}
     with open(contract_path) as f:
         return yaml.safe_load(f).get("assets", {})
-
-
-IGNORE_FILES = {".gitignore", ".python-version", "uv.lock"}
-IGNORE_DIRS = {".venv", "data", ".git", "__pycache__", ".ruff_cache", ".pytest_cache"}
 
 
 def scan_physical_assets(target: Path) -> List[Asset]:
