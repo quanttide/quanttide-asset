@@ -3,25 +3,43 @@
 从契约文件加载发现规则。
 """
 
-import yaml
 from pathlib import Path
 from typing import Final
 
+import yaml
+from returns.result import Success, safe
+
+
 PROJECT_ROOT: Final = Path(__file__).parent.parent
-DATA_DIR: Final = PROJECT_ROOT / "data"
 CONTRACT_FILE: Final = ".quanttide/asset/contract.yaml"
 
 
-def load_discovery_config() -> dict:
-    """从契约文件加载发现配置"""
+@safe
+def load_contract() -> dict:
+    """从契约文件加载完整配置"""
     config_path = PROJECT_ROOT / CONTRACT_FILE
-    if not config_path.exists():
-        return {}
     with open(config_path) as f:
-        return yaml.safe_load(f).get("discovery", {})
+        return yaml.safe_load(f)
 
 
-discovery = load_discovery_config()
-TYPE_MAP: Final = discovery.get("type_map", {})
-IGNORE_FILES: Final = set(discovery.get("ignore_files", []))
-IGNORE_DIRS: Final = set(discovery.get("ignore_dirs", []))
+def get_discovery() -> dict:
+    """获取发现配置"""
+    result = load_contract()
+    if isinstance(result, Success):
+        return result.unwrap().get("discovery", {})
+    return {}
+
+
+def get_assets() -> dict:
+    """获取资产清单"""
+    result = load_contract()
+    if isinstance(result, Success):
+        return result.unwrap().get("assets", {})
+    return {}
+
+
+DISCOVERY = get_discovery()
+SCOPE: Final = DISCOVERY.get("scope", ["."])
+FILTERS: Final = DISCOVERY.get("filters", {})
+EXCLUDES: Final = FILTERS.get("excludes", [])
+MAPS: Final = DISCOVERY.get("maps", {})

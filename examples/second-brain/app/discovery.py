@@ -7,44 +7,44 @@
 2. 逻辑层：加载契约文件，进行状态对标（发现、缺失、变更）。
 """
 
-import json
-from dataclasses import dataclass, asdict
-from pathlib import Path
+from fnmatch import fnmatch
+from pathlib import Path, PurePath
 from typing import Dict, List
 
-import yaml
-
-from .config import CONTRACT_FILE, IGNORE_FILES, IGNORE_DIRS, TYPE_MAP
-
-
-@dataclass(frozen=True)
-class Asset:
-    """资产模型：对标规范中的资产定义，包含路径、类型及生命周期状态"""
-
-    path: str
-    type: str
-    status: str  # 对应事件：discovered, verified, missing, new_asset
+try:
+    from .config import EXCLUDES, MAPS, get_assets
+    from .schemas import Asset
+except ImportError:
+    from config import EXCLUDES, MAPS, get_assets
+    from schemas import Asset
 
 
 # --- 核心业务逻辑 ---
 
 
 def identify_type(path: Path) -> str:
-    """【功能 2：资产类型识别】根据扩展名自动识别资产类别"""
-    if path.suffix:
-        return TYPE_MAP.get(path.suffix, "unknown")
-    if path.name in {".gitignore", ".python-version"}:
-        return "config"
+    """【功能 2：资产类型识别】根据映射规则自动识别资产类型"""
+    rel_path = str(path)
+    for map_name, map_rule in MAPS.items():
+        if fnmatch(rel_path, map_rule["match"]):
+            return map_rule.get("assign", {}).get("type", "unknown")
     return "unknown"
 
 
-def load_contract(target: Path) -> Dict:
-    """【功能 3：契约加载策略】尝试读取契约文件"""
-    contract_path = target / CONTRACT_FILE
-    if not contract_path.exists():
-        return {}
-    with open(contract_path) as f:
-        return yaml.safe_load(f).get("assets", {})
+def is_excluded(path: Path, target: Path) -> bool:
+    """检查路径是否被排除"""
+    rel_path = path.relative_to(target)
+    for pattern in EXCLUDES:
+        clean_pattern = pattern
+        if clean_pattern.startswith("**/"):
+            clean_pattern = clean_pattern[3:]
+        if clean_pattern.endswith("/**"):
+            dir_name = clean_pattern[:-3]
+            if dir_name in rel_path.parts:
+                return True
+        elif PurePath(rel_path).match(clean_pattern):
+            return True
+    return False
 
 
 def scan_physical_assets(target: Path) -> List[Asset]:
@@ -52,10 +52,7 @@ def scan_physical_assets(target: Path) -> List[Asset]:
     return [
         Asset(str(p.relative_to(target)), identify_type(p), "discovered")
         for p in target.rglob("*")
-        if p.is_file()
-        and p.name not in IGNORE_FILES
-        and not any(ignored in p.parts for ignored in IGNORE_DIRS)
-        and ".quanttide" not in p.parts
+        if p.is_file() and not is_excluded(p, target)
     ]
 
 
@@ -71,7 +68,6 @@ def validate_against_contract(contract: Dict, fs_assets: List[Asset]) -> List[As
 
     # 索引契约路径，用于目录前缀匹配
     contract_paths = {info["path"]: info for info in contract.values()}
-    fs_paths = {a.path for a in fs_assets}
 
     def is_verified(path: str) -> bool:
         for contract_path in contract_paths:
@@ -95,33 +91,12 @@ def validate_against_contract(contract: Dict, fs_assets: List[Asset]) -> List[As
     return results
 
 
-# --- 程序入口 ---
-
-
-def save_assets(assets: List[Asset], output_path: Path | None = None) -> Path:
-    """将资产发现结果写入 data/ 目录"""
-    if output_path is None:
-        output_path = Path(__file__).parent.parent / "data" / "assets.json"
-
-    output_path.parent.mkdir(parents=True, exist_ok=True)
-    with open(output_path, "w") as f:
-        json.dump([asdict(a) for a in assets], f, indent=2)
-
-    return output_path
-
-
 def discover(target_dir: str) -> List[Asset]:
     """
     资产发现主流程：
     1. 确定目标路径 -> 2. 尝试加载契约 -> 3. 执行物理扫描 -> 4. 验证比对
     """
     root = Path(target_dir)
-    contract = load_contract(root)
+    contract = get_assets()
     fs_assets = scan_physical_assets(root)
     return validate_against_contract(contract, fs_assets)
-
-
-if __name__ == "__main__":
-    assets = discover(".")
-    output_path = save_assets(assets)
-    print(f"Saved {len(assets)} assets to {output_path}")
