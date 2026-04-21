@@ -29,3 +29,6 @@
 [submodule "packages/toolkit"]
 	path = packages/toolkit
 	url = https://github.com/quanttide/quanttide-asset-toolkit
+[submodule "docs/essay"]
+	path = docs/essay
+	url = https://github.com/quanttide/quanttide-essay-of-asset-management
