@@ -1,0 +1,31 @@
+spec_version: 0.0.1
+version: 0.1.0
+
+assets:
+  pyproject:
+    title: 项目配置
+    type: config
+    category: project
+    path: pyproject.toml
+    description: Python项目配置文件
+
+  readme:
+    title: 项目文档
+    type: docs
+    category: readme
+    path: README.md
+    description: 项目说明文档
+
+  app:
+    title: 应用代码
+    type: code
+    category: app
+    path: app
+    description: 资产发现程序核心模块
+
+  docs:
+    title: 开发者文档
+    type: docs
+    category: dev
+    path: docs
+    description: 资产发现程序开发者文档
