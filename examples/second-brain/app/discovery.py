@@ -55,6 +55,7 @@ def scan_physical_assets(target: Path) -> List[Asset]:
         if p.is_file()
         and p.name not in IGNORE_FILES
         and not any(ignored in p.parts for ignored in IGNORE_DIRS)
+        and ".quanttide" not in p.parts
     ]
 
 
@@ -68,21 +69,27 @@ def validate_against_contract(contract: Dict, fs_assets: List[Asset]) -> List[As
     if not contract:
         return fs_assets  # 无契约时：仅执行文件系统发现
 
-    # 索引契约路径，用于快速比对
-    contract_map = {info["path"]: info for info in contract.values()}
+    # 索引契约路径，用于目录前缀匹配
+    contract_paths = {info["path"]: info for info in contract.values()}
     fs_paths = {a.path for a in fs_assets}
+
+    def is_verified(path: str) -> bool:
+        for contract_path in contract_paths:
+            if path == contract_path or path.startswith(contract_path + "/"):
+                return True
+        return False
 
     # 对物理发现的资产进行状态分类
     results = [
-        a._replace(status="verified" if a.path in contract_map else "new_asset")
+        Asset(a.path, a.type, "verified" if is_verified(a.path) else "new_asset")
         for a in fs_assets
     ]
 
     # 追溯契约中定义但实际缺失的资产
     results += [
         Asset(p, info["type"], "missing")
-        for p, info in contract_map.items()
-        if p not in fs_paths
+        for p, info in contract_paths.items()
+        if not any(is_verified(a.path) for a in fs_assets)
     ]
 
     return results

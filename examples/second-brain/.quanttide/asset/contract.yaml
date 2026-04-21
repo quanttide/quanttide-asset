@@ -1,6 +1,35 @@
 spec_version: 0.0.1
 version: 0.1.0
 
+discovery:
+  type_map:
+    .md: docs
+    .txt: docs
+    .pdf: docs
+    .py: code
+    .js: code
+    .ts: code
+    .yaml: config
+    .yml: config
+    .json: config
+    .toml: config
+    .csv: data
+    .sqlite: data
+    .lock: config
+
+  ignore_files:
+    - .gitignore
+    - .python-version
+    - uv.lock
+
+  ignore_dirs:
+    - .venv
+    - data
+    - .git
+    - __pycache__
+    - .ruff_cache
+    - .pytest_cache
+
 assets:
   pyproject:
     title: 项目配置
