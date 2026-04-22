@@ -1,11 +1,12 @@
 # 知识库契约 - 声明必须存在的知识库
+
+# 通用结构规范（不暴露具体 space_id）
 spaces:
-  - id: "7609933822792060103"
-    name: "工作档案"
+  - name: "工作档案"
     required_nodes: []
-  - id: "7610769344217222362"
-    name: "工作报告"
+
+  - name: "工作报告"
     required_nodes: []
-  - id: "7526874705676091393"
-    name: "会议档案"
+
+  - name: "会议档案"
     required_nodes: []
