@@ -19,6 +19,9 @@
 [submodule "docs/report"]
 	path = docs/report
 	url = https://github.com/quanttide/quanttide-report-of-asset-management.git
+[submodule "docs/roadmap"]
+	path = docs/roadmap
+	url = https://github.com/quanttide/quanttide-roadmap-of-asset-management
 [submodule "docs/gallery"]
 	path = docs/gallery
 	url = https://github.com/quanttide/quanttide-gallery-of-asset-management.git
