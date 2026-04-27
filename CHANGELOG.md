@@ -1,6 +1,9 @@
 # CHANGELOG
 
-## [Unreleased]
+## [v0.1.2] - 2026-04-27
+
+### Added
+- 添加资产契约 (asset/contract.yaml)
 
 ## [v0.1.1] - 2026-04-21
 
