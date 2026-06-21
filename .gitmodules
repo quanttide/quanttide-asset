@@ -35,3 +35,6 @@
 [submodule "packages/quanttide-asset-toolkit"]
 	path = packages/quanttide-asset-toolkit
 	url = https://github.com/quanttide/quanttide-asset-toolkit
+[submodule "data/profile"]
+	path = data/profile
+	url = https://github.com/quanttide/quanttide-profile-of-asset-management.git
