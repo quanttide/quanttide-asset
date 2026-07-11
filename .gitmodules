@@ -41,3 +41,6 @@
 [submodule "data/insight"]
 	path = data/insight
 	url = https://github.com/quanttide/quanttide-insight-of-asset-management.git
+[submodule "data/journal"]
+	path = data/journal
+	url = https://github.com/quanttide/quanttide-journal-of-asset-management.git
