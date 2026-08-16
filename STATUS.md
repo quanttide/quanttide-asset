@@ -1,13 +1,13 @@
 # quanttide-asset 状态报告
 
 > 更新日期：2026-08-16
-> 最新主仓库 commit：577cef5
+> 最新主仓库 commit：2b5330c
 
 ## apps/ — 应用
 
 | 子模块 | 版本 | commit |
 |--------|------|--------|
-| `qtcloud-asset` | cli/v0.1.0-alpha.2-62-g7677785 | 7677785 |
+| `qtcloud-asset` | cli/v0.1.0-alpha.2-63-gc6ce0a2 | c6ce0a2 |
 
 ## data/ — 陈述性记忆
 
@@ -46,5 +46,4 @@
 
 ## 待处理
 
-- `qtcloud-asset` 本地领先 origin/main 2 提交（ROADMAP 目标 3 + STATUS.md），待推送
 - `data/context`、`data/insight`、`data/intention`、`data/journal` 远端有更新，待拉取
