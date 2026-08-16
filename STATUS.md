@@ -7,7 +7,7 @@
 
 | 子模块 | 版本 | commit |
 |--------|------|--------|
-| `qtcloud-asset` | cli/v0.1.0-alpha.2-63-gc6ce0a2 | c6ce0a2 |
+| `qtcloud-asset` | cli/v0.1.0-alpha.2-65-g7a54916 | 7a54916 |
 
 ## data/ — 陈述性记忆
 
