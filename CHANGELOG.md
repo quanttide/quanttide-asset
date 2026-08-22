@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## [Unreleased]
+
+### Changed
+- 重写 README：补全领域定义（概述、领域边界、子模块结构、许可 CC BY 4.0）
+
 ## [v0.1.3] - 2026-05-15
 
 ### Changed
