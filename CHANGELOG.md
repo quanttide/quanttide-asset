@@ -4,6 +4,7 @@
 
 ### Changed
 - 重写 README：补全领域定义（概述、领域边界、子模块结构、许可 CC BY 4.0）
+- 更新 specification 子模块至 v0.1.0：新增 type 字段，重命名 assets 为 schemas，移除 content 字段
 
 ## [v0.1.3] - 2026-05-15
 
