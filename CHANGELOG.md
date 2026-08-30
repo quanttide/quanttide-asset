@@ -8,6 +8,7 @@
 ### Changed
 - 重写 README：补全领域定义（概述、领域边界、子模块结构、许可 CC BY 4.0）
 - 更新 specification 子模块至 v0.1.0：新增 type 字段，重命名 assets 为 schemas，移除 content 字段 (**breaking**)
+- 更新 bylaw 子模块至 v0.3.0：新增公开平台资产契约章程，第二大脑章程重构为双轴组织与 20 类资产命名规范
 
 ## [v0.1.3] - 2026-05-15
 
