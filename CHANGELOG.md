@@ -2,6 +2,9 @@
 
 ## [Unreleased]
 
+### Added
+- 新增公开平台资产契约章程 (bylaw/contract/public-platform.md)：云存储桶等基础设施资产的分类、生命周期与治理规范
+
 ### Changed
 - 重写 README：补全领域定义（概述、领域边界、子模块结构、许可 CC BY 4.0）
 - 更新 specification 子模块至 v0.1.0：新增 type 字段，重命名 assets 为 schemas，移除 content 字段 (**breaking**)
