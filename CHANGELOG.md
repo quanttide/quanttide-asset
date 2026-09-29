@@ -2,6 +2,11 @@
 
 ## [Unreleased]
 
+### 变更
+
+- 实验室子模块改名：`examples/default` → `examples/quanttide-asset-lab`（仓 quanttide-laboratory-of-asset-management → quanttide-asset-lab）
+
+
 ### Added
 - 新增公开平台资产契约章程 (bylaw/contract/public-platform.md)：云存储桶等基础设施资产的分类、生命周期与治理规范
 
