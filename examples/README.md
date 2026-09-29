@@ -4,4 +4,4 @@
 
 ## 目录结构
 
-- `default/` — 资产管理实验室（子模组 `quanttide-laboratory-of-asset-management`）
+- `default/` — 资产管理实验室（子模组 `quanttide-asset-lab`）
