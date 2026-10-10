@@ -47,3 +47,6 @@
 [submodule "examples/quanttide-asset-lab"]
 	path = examples/quanttide-asset-lab
 	url = https://github.com/quanttide/quanttide-asset-lab.git
+[submodule "data/archive"]
+	path = data/archive
+	url = https://github.com/quanttide/quanttide-archive-of-asset-management.git
