@@ -33,7 +33,7 @@
 ## [v0.1.1] - 2026-04-21
 
 ### Added
-- 添加数字资产工具箱 (toolkit) 子模块
+- 添加数字资产标准库 (toolkit) 子模块
 
 ### Removed
 - 移除第二大脑示例 (second-brain)
