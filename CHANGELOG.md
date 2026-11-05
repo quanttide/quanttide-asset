@@ -11,6 +11,7 @@
 - 新增公开平台资产契约章程 (bylaw/contract/public-platform.md)：云存储桶等基础设施资产的分类、生命周期与治理规范
 
 ### Changed
+- 案例集新增《根第二大脑》（`catalog/root-second-brain.md`）：根仓四轴结构与 defaults/domains 两级关系，更新 gallery 子模块指针
 - 工作档案重建为领域工作台：新增 `quanttide/`（25 个领域，按产物类别归档）、`quanttide-founder/`、`quanttide-tech/` 与 CONTRIBUTING、LICENSE，profile 子模块发布 v0.2.0
 - 工作档案（`data/profile`）骨架以外的全部内容迁入归档站（`data/archive/profile/`），档案仓只保留索引与结构文件，更新 profile 与 archive 子模块指针
 - 资产札记《第二大脑压力分担模型》迁出至元工程论文仓 `metaphysics/category/second-brain.md`，资产中文名按《量潮标准范畴》口径更正，更新 essay 子模块指针
