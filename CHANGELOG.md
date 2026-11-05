@@ -11,6 +11,7 @@
 - 新增公开平台资产契约章程 (bylaw/contract/public-platform.md)：云存储桶等基础设施资产的分类、生命周期与治理规范
 
 ### Changed
+- 资产档案仓补 `quanttide-tech/github.md`：quanttide-tech 私有仓子模块结构记录，更新 profile 子模块指针
 - 工作档案（`data/profile`）的三个工作台目录（`quanttide/`、`quanttide-founder/`、`quanttide-tech/`，99 篇）迁回工作档案仓 `quanttide-profile-of-knowledge-work`，更新 profile 子模块指针
 - 案例集新增《根第二大脑》（`catalog/root-second-brain.md`）：根仓四轴结构与 defaults/domains 两级关系，更新 gallery 子模块指针
 - 工作档案重建为领域工作台：新增 `quanttide/`（25 个领域，按产物类别归档）、`quanttide-founder/`、`quanttide-tech/` 与 CONTRIBUTING、LICENSE，profile 子模块发布 v0.2.0
